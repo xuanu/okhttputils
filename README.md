@@ -1,6 +1,5 @@
 # okhttp-utils
-
->由于个人原因，现已停止维护。
+> 在原版基本上解决内存泄露问题，fork项目方便后期修改：  
 
 对okhttp的封装类，okhttp见：[https://github.com/square/okhttp](https://github.com/square/okhttp).
 
@@ -9,16 +8,19 @@
 ## 用法
 
 * Android Studio
-	
+    ```
+     整个项目build.gradle添加
+	 allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+	 模块中build.gradle添加 
+	 dependencies {
+	 compile 'com.github.xuanu:okhttputils:1.0.3'
+	 }
 	```
-	compile 'com.zhy:okhttputils:2.6.2'
-	```
-	
-* Eclipse
-	
-	下载最新jar:[okhttputils-2\_6\_2.jar](okhttputils-2_6_2.jar?raw=true)
-
-	注：需要同时导入okhttp和okio的jar，下载见：[https://github.com/square/okhttp](https://github.com/square/okhttp).
 	
 
 ## 目前对以下需求进行了封装
