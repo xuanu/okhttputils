@@ -11,6 +11,7 @@ import com.zhy.http.okhttp.request.RequestCall;
 import com.zhy.http.okhttp.utils.Platform;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.concurrent.Executor;
 
 import okhttp3.Call;
@@ -116,41 +117,37 @@ public class OkHttpUtils
     {
         if (callback == null)
             callback = Callback.CALLBACK_DEFAULT;
-        final Callback finalCallback = callback;
+        final WeakReference<Callback> weakCallback = new WeakReference<Callback>(callback);
         final int id = requestCall.getOkHttpRequest().getId();
 
-        requestCall.getCall().enqueue(new okhttp3.Callback()
-        {
+        requestCall.getCall().enqueue(new okhttp3.Callback() {
             @Override
-            public void onFailure(Call call, final IOException e)
-            {
-                sendFailResultCallback(call, e, finalCallback, id);
+            public void onFailure(Call call, final IOException e) {
+                if (weakCallback.get() != null) {
+                    sendFailResultCallback(call, e, weakCallback.get(), id);
+                }
             }
 
             @Override
-            public void onResponse(final Call call, final Response response)
-            {
-                try
-                {
-                    if (call.isCanceled())
-                    {
-                        sendFailResultCallback(call, new IOException("Canceled!"), finalCallback, id);
+            public void onResponse(final Call call, final Response response) {
+                if (weakCallback.get() == null) {
+                    return;
+                }
+                try {
+                    if (call.isCanceled()) {
+                        sendFailResultCallback(call, new IOException("Canceled!"), weakCallback.get(), id);
                         return;
                     }
 
-                    if (!finalCallback.validateReponse(response, id))
-                    {
-                        sendFailResultCallback(call, new IOException("request failed , reponse's code is : " + response.code()), finalCallback, id);
+                    if (!weakCallback.get().validateReponse(response, id)) {
+                        sendFailResultCallback(call, new IOException("request failed , reponse's code is : " + response.code()), weakCallback.get(), id);
                         return;
                     }
-
-                    Object o = finalCallback.parseNetworkResponse(response, id);
-                    sendSuccessResultCallback(o, finalCallback, id);
-                } catch (Exception e)
-                {
-                    sendFailResultCallback(call, e, finalCallback, id);
-                } finally
-                {
+                    Object o = weakCallback.get().parseNetworkResponse(response, id);
+                    sendSuccessResultCallback(o, weakCallback.get(), id);
+                } catch (Exception e) {
+                    sendFailResultCallback(call, e, weakCallback.get(), id);
+                } finally {
                     if (response.body() != null)
                         response.body().close();
                 }

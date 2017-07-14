@@ -1,10 +1,10 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'//添加
+
 
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         minSdkVersion 9
@@ -46,13 +46,4 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
 }
 
-//添加
-publish {
-    userOrg = 'hongyangandroid'//bintray.com用户名
-    groupId = 'com.zhy'//jcenter上的路径
-    artifactId = 'okhttputils'//项目名称
-    publishVersion = '2.6.2'//版本号
-    desc = 'Oh hi, this is a nice description for a project, right?'
-    website = 'https://github.com/hongyangAndroid/okhttp-utils'
-}
 
