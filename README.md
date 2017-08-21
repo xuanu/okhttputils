@@ -1,5 +1,7 @@
-# okhttp-utils
-> 在原版基本上解决内存泄露问题，fork项目方便后期修改：  
+# okhttp-utils  
+> callback使用软引用封装，解决内存泄露问题。  
+> fork项目方便后期修改。  
+> 使用弱引用，可能会过早的被回收。  
 
 对okhttp的封装类，okhttp见：[https://github.com/square/okhttp](https://github.com/square/okhttp).
 

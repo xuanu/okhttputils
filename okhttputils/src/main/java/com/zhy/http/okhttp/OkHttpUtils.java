@@ -11,6 +11,7 @@ import com.zhy.http.okhttp.request.RequestCall;
 import com.zhy.http.okhttp.utils.Platform;
 
 import java.io.IOException;
+import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.Executor;
 
@@ -117,7 +118,7 @@ public class OkHttpUtils
     {
         if (callback == null)
             callback = Callback.CALLBACK_DEFAULT;
-        final WeakReference<Callback> weakCallback = new WeakReference<Callback>(callback);
+        final SoftReference<Callback> weakCallback = new SoftReference<Callback>(callback);
         final int id = requestCall.getOkHttpRequest().getId();
 
         requestCall.getCall().enqueue(new okhttp3.Callback() {
