@@ -1,7 +1,6 @@
 # okhttp-utils  
-> callback使用软引用封装，解决内存泄露问题。  
-> fork项目方便后期修改。  
-> 使用弱引用，可能会过早的被回收。  
+> 未能解决内存泄露问题，曾以为弱引用可以解决，但可能会被过早的回收，导致无数据。callback使用软引用封装。  
+> 看来要想解决内存泄露，还是自己在onDestory里取消网络请求吧。  
 
 对okhttp的封装类，okhttp见：[https://github.com/square/okhttp](https://github.com/square/okhttp).
 
